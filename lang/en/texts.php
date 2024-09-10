@@ -5328,6 +5328,7 @@ $lang = array(
     'payment_failed' => 'Payment Failed',
     'ssl_host_override' => 'SSL Host Override',
     'upload_logo_short' => 'Upload Logo',
+    'vat_not_registered' => 'Seller not VAT registered',
 );
 
 return $lang;
