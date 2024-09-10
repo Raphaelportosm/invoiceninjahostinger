@@ -3891,7 +3891,7 @@ $lang = array(
     'payment_method_saving_failed' => 'Payment method can\'t be saved for future use.',
     'pay_with' => 'Pay with',
     'n/a' => 'N/A',
-    'by_clicking_next_you_accept_terms' => 'By clicking "Next" you accept terms.',
+    'by_clicking_next_you_accept_terms' => 'By clicking "Next step" you accept terms.',
     'not_specified' => 'Not specified',
     'before_proceeding_with_payment_warning' => 'Before proceeding with payment, you have to fill following fields',
     'after_completing_go_back_to_previous_page' => 'After completing, go back to previous page.',
@@ -5356,6 +5356,7 @@ $lang = array(
     'inbound_mailbox_allow_unknown_help' => 'Allow anyone to send an expense email for processing',
     'quick_actions' => 'Quick Actions',
     'end_all_sessions_help' => 'Logs out all users and requires all active users to reauthenticate.'
+    'vat_not_registered' => 'Seller not VAT registered',
 );
 
 return $lang;

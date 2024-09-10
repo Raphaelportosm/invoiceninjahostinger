@@ -141,6 +141,10 @@ class ZugferdEDokument extends AbstractService
         }
 
         $invoicing_data = $this->document->calc();
+        $kleinunternehmerreglung = false;
+        if ($invoicing_data->total_taxes == 0){
+            $kleinunternehmerreglung = true;
+        }
         //Create line items and calculate taxes
         foreach ($this->document->line_items as $index => $item) {
             /** @var InvoiceItem $item **/
@@ -175,6 +179,7 @@ class ZugferdEDokument extends AbstractService
             }
 
             $this->xdocument->setDocumentPositionLineSummation($item->line_total);
+            if (!$kleinunternehmerreglung){
             // According to european law, each line item can only have one tax rate
             if (!(empty($item->tax_name1) && empty($item->tax_name2) && empty($item->tax_name3))) {
                 $taxtype = $this->getTaxType($item->tax_id);
@@ -221,6 +226,10 @@ class ZugferdEDokument extends AbstractService
                     $this->addtoTaxMap($taxtype, $item->line_total, 0);
                     // nlog("Can't add correct tax position");
                 }
+            }} else {
+                $taxtype = ZugferdDutyTaxFeeCategories::EXEMPT_FROM_TAX;
+                $this->xdocument->addDocumentPositionTax($taxtype, 'VAT', 0, 0, ctrans('texts.vat_not_registered'), "VATNOTREG");
+                $this->addtoTaxMap($taxtype, $item->line_total, 0);
             }
         }
         if ($this->document->is_amount_discount) {
@@ -230,6 +239,7 @@ class ZugferdEDokument extends AbstractService
         }
 
         $this->xdocument->setDocumentSummation($this->document->amount, $this->document->balance, $invoicing_data->getSubTotal(), $invoicing_data->getTotalSurcharges(), $document_discount, $invoicing_data->getSubTotal() - $document_discount, $invoicing_data->getItemTotalTaxes(), 0.0, $this->document->amount - $this->document->balance);
+        if (!$kleinunternehmerreglung){
         foreach ($this->tax_map as $item) {
             if ($document_discount > 0) {
                 if ($item["net_amount"] >= $document_discount) {
@@ -248,6 +258,8 @@ class ZugferdEDokument extends AbstractService
                 $this->xdocument->addDocumentTax($item["tax_type"], "VAT", $item["net_amount"], $item["tax_rate"] * $item["net_amount"], $item["tax_rate"] * 100);
             }
 
+        }} else {
+            $this->xdocument->addDocumentTax(ZugferdDutyTaxFeeCategories::EXEMPT_FROM_TAX, "VAT", 0, 0, 0, ctrans('texts.vat_not_registered'), "VATNOTREG");
         }
 
         // The validity can be checked using https://portal3.gefeg.com/invoice/validation or https://e-rechnung.bayern.de/app/#/upload
