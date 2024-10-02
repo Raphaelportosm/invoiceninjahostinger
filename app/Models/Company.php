@@ -81,6 +81,7 @@ use Laracasts\Presenter\PresentableTrait;
  * @property bool $invoice_task_documents
  * @property bool $show_tasks_table
  * @property bool $is_disabled
+ * @property bool $small_company_vat_exempt
  * @property bool $default_task_is_date_based
  * @property bool $enable_product_discount
  * @property bool $calculate_expense_tax_by_amount
@@ -369,6 +370,7 @@ class Company extends BaseModel
         'notify_vendor_when_paid',
         'calculate_taxes',
         'tax_data',
+        'small_company_vat_exempt',
         'e_invoice_certificate_passphrase',
         'expense_mailbox_active',
         'expense_mailbox',

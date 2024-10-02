@@ -110,6 +110,7 @@ class BaseRule implements RuleInterface
 
     /** EU TAXES */
 
+    public bool $small_company_excempt = false;
 
     public string $tax_name1 = '';
     public float $tax_rate1 = 0;
