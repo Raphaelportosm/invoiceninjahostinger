@@ -5357,6 +5357,7 @@ $lang = array(
     'quick_actions' => 'Quick Actions',
     'end_all_sessions_help' => 'Logs out all users and requires all active users to reauthenticate.'
     'vat_not_registered' => 'Seller not VAT registered',
+    'vat_not_registered' => 'Seller not VAT registered',
 );
 
 return $lang;
