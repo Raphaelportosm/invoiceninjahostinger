@@ -44,6 +44,8 @@ class Rule extends BaseRule implements RuleInterface
 
     public string $tax_name1 = 'MwSt.';
 
+    public bool $small_company_excempt = true;
+
     private string $tax_name;
     /**
      * Initializes the rules and builds any required data.
@@ -237,7 +239,11 @@ class Rule extends BaseRule implements RuleInterface
      */
     public function calculateRates(): self
     {
-        if ($this->client->is_tax_exempt) {
+        if ($this->client->company->small_company_tax_exempt ?? false){
+            // nlog("Small company vat exempt");
+            $this->tax_rate = 0;
+            $this->reduced_tax_rate = 0;
+        } elseif ($this->client->is_tax_exempt) {
             // nlog("tax exempt");
             $this->tax_rate = 0;
             $this->reduced_tax_rate = 0;
